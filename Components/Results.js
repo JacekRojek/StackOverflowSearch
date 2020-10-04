@@ -1,24 +1,35 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { connect } from 'react-redux';
-import { getSearchResults } from '../redux/actions/api';
+import {
+  Dimensions, FlatList, StyleSheet, Text, View
+} from 'react-native';
+import { connect, useDispatch } from 'react-redux';
+import { WebView } from 'react-native-webview';
+import { getSearchResults, selectQuestion } from '../redux/actions/api';
 
-function ListItem({ item }) {
-  return (
-    <View style={styles.container}>
+function Results({ results, questionURI }) {
+  const { width, height } = Dimensions.get('window');
+  const dispatch = useDispatch();
+  const ListItem = ({ item, onPress }) => (
+    <View style={styles.container} onTouchStart={() => onPress(item.link)}>
       <Text>{item.title}</Text>
     </View>
   );
-}
 
-function Results({ results }) {
   return (
     <View style={styles.container}>
-      <FlatList
-        data={results}
-        renderItem={ListItem}
-        keyExtractor={(item) => item.question_id}
-      />
+      {questionURI ? (
+        <WebView
+          style={{ width, height }}
+          source={{ uri: questionURI }}
+        />
+      ) : (
+        <FlatList
+          data={results}
+          renderItem={({ item }) =>
+            <ListItem item={item} onPress={(link) => dispatch(selectQuestion(link))} />}
+          keyExtractor={(item) => item.question_id}
+        />
+      )}
     </View>
   );
 }

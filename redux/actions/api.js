@@ -2,6 +2,7 @@ export const TYPES = {
   SEARCH: 'SEARCH',
   SEARCH_SUCCESS: 'SEARCH_SUCCESS',
   SEARCH_FAILURE: 'SEARCH_FAILURE',
+  SELECT_QUESTION: 'SELECT_QUESTION'
 };
 
 const URL = 'https://api.stackexchange.com/2.2/';
@@ -21,4 +22,8 @@ export const getSearchResults = (searchQuery) => async (dispatch) => {
       payload: 'Network Error',
     });
   }
+};
+
+export const selectQuestion = (uri) => async (dispatch) => {
+  dispatch({ type: TYPES.SELECT_QUESTION, payload: uri });
 };

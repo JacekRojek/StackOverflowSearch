@@ -1,22 +1,30 @@
 import React from 'react';
 import { Button, StyleSheet, TextInput, View } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { getSearchResults } from '../redux/actions/api';
+import { connect, useDispatch } from 'react-redux';
+import { getSearchResults, selectQuestion } from '../redux/actions/api';
 
-export default function SearchBar() {
-  const [query, onChangeText] = React.useState('Useless Placeholder');
+function SearchBar({ questionURI }) {
+  const [query, onChangeText] = React.useState('Java');
   const dispatch = useDispatch();
   return (
     <View style={styles.container}>
+      {questionURI ? (
+        <Button
+          onPress={() => dispatch(selectQuestion(''))}
+          title=" Back "
+          color="#222"
+          accessibilityLabel="Back"
+        />
+      ) : null}
       <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+        style={styles.input}
         onChangeText={(text) => onChangeText(text)}
         value={query}
       />
       <Button
         onPress={() => dispatch(getSearchResults(query))}
         title="Search"
-        color="#841584"
+        color="#F47F24"
         accessibilityLabel="Search"
       />
     </View>
@@ -25,9 +33,25 @@ export default function SearchBar() {
 
 const styles = StyleSheet.create({
   container: {
+    maxHeight: 60,
     flex: 1,
+    flexDirection: 'row',
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    margin: 10
+  },
+  input: {
+    height: 35,
+    borderColor: 'gray',
+    borderWidth: 1,
+    flex: 1,
+    padding: 10,
+    margin: 10,
   },
 });
+
+const mapStateToProps = (state) => ({ ...state.api });
+const mapDispatchToProps = () => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
