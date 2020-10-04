@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, StyleSheet, TextInput, View } from 'react-native';
+import { Button, StyleSheet, TextInput, View, Keyboard } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { getSearchResults, selectQuestion } from '../redux/actions/api';
 
@@ -22,7 +22,10 @@ function SearchBar({ questionURI }) {
         value={query}
       />
       <Button
-        onPress={() => dispatch(getSearchResults(query))}
+        onPress={() => {
+          Keyboard.dismiss();
+          dispatch(getSearchResults(query));
+        }}
         title="Search"
         color="#F47F24"
         accessibilityLabel="Search"
