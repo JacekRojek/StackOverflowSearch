@@ -33,7 +33,6 @@ const ListItem = ({ item, onPress, width }) => (
       <Text style={styles.questionText} ellipsizeMode="tail" numberOfLines={2}>{item.title}</Text>
       <Text>Answer Count: {item.answer_count || 0 }</Text>
     </View>
-
   </TouchableOpacity>
 );
 
@@ -62,7 +61,7 @@ function Results({ results, questionURI, isFetching, query }) {
               onPress={(link) => dispatch(selectQuestion(link))}
             />
           )}
-          keyExtractor={(item) => item.question_id}
+          keyExtractor={(item) => String(item.question_id)}
         />
       )}
     </View>
